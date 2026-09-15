@@ -1,0 +1,50 @@
+module_name: fw_ff_control
+parameters:
+- group: FW Feedforward Control
+  definitions:
+    FW_NN_FF_GAIN:
+      description:
+        short: Normal load factor feedforward gain
+        long: |-
+          Gain applied to the normal load factor feedforward n_n_ff from an external
+          trajectory planner (vehicle_ff_setpoint). It is converted to a pitch rate
+          feedforward via the short-period approximation
+          q_ff = FW_NN_FF_GAIN * g/V * (n_n_ff - 1) and added on top of the pitch
+          rate setpoint of the attitude controller. The feedforward is faded out below
+          FW_AIRSPD_MIN and clamped to FW_P_RMAX_NEG/POS. 0 disables the feedforward.
+      type: float
+      default: 0.0
+      min: 0.0
+      max: 5.0
+      decimal: 2
+      increment: 0.05
+    FW_NT_FF_GAIN:
+      description:
+        short: Tangential load factor feedforward gain
+        long: |-
+          Gain applied to the tangential load factor feedforward n_t_ff from an external
+          trajectory planner (vehicle_ff_setpoint). It is converted to a specific total
+          energy rate feedforward E_dot_ff = FW_NT_FF_GAIN * V_TAS * g * n_t_ff and added
+          to the total energy rate demand of TECS, i.e. it drives the throttle through the
+          existing energy rate -> throttle feedforward mapping.
+          0 disables the feedforward.
+      type: float
+      default: 0.0
+      min: 0.0
+      max: 5.0
+      decimal: 2
+      increment: 0.05
+    FW_P_FF_GAIN:
+      description:
+        short: Roll rate feedforward gain
+        long: |-
+          Gain applied to the body roll rate feedforward p_ff from an external
+          trajectory planner (vehicle_ff_setpoint). The scaled value is added on top
+          of the roll rate setpoint of the attitude controller.
+          0 disables the feedforward.
+      type: float
+      default: 0.0
+      min: 0.0
+      max: 2.0
+      decimal: 2
+      increment: 0.05

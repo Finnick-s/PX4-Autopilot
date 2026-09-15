@@ -570,6 +570,10 @@ TECSControl::ControlValues TECSControl::_calcThrottleControlSteRate(const STERat
 	// The additional normal load factor is given by (1/cos(bank angle) - 1)
 	ste_rate.setpoint += param.load_factor_correction * (param.load_factor - 1.f);
 
+	// Add the external specific total energy rate feedforward (e.g. from a time-parameterized
+	// trajectory planner). It is constrained together with the rest of the demand below.
+	ste_rate.setpoint += param.ste_rate_ff;
+
 	ste_rate.setpoint = constrain(ste_rate.setpoint, limit.STE_rate_min, limit.STE_rate_max);
 	ste_rate.estimate = _ste_rate_estimate_filter.getState();
 

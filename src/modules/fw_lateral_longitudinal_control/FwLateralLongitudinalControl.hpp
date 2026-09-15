@@ -69,6 +69,7 @@
 #include <uORB/topics/fixed_wing_lateral_status.h>
 #include <uORB/topics/fixed_wing_longitudinal_setpoint.h>
 #include <uORB/topics/fuel_tank_status.h>
+#include <uORB/topics/fw_feedforward.h>
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 #include <uORB/topics/flight_phase_estimation.h>
 #include <uORB/topics/lateral_control_configuration.h>
@@ -126,6 +127,7 @@ private:
 	uORB::SubscriptionData<vehicle_status_s> _vehicle_status_sub{ORB_ID(vehicle_status)};
 	uORB::Subscription _fw_lateral_ctrl_sub{ORB_ID(fixed_wing_lateral_setpoint)};
 	uORB::Subscription _fw_longitudinal_ctrl_sub{ORB_ID(fixed_wing_longitudinal_setpoint)};
+	uORB::SubscriptionData<fw_feedforward_s> _fw_feedforward_sub{ORB_ID(fw_feedforward)};
 	uORB::Subscription _long_control_configuration_sub{ORB_ID(longitudinal_control_configuration)};
 	uORB::Subscription _lateral_control_configuration_sub{ORB_ID(lateral_control_configuration)};
 

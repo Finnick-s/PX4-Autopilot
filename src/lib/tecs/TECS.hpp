@@ -243,6 +243,7 @@ public:
 		// Energy control param
 		float ste_rate_time_const;				///< Filter time constant for specific total energy rate (damping path) [s].
 		float seb_rate_ff;					///< Specific energy balance rate feedforward gain.
+		float ste_rate_ff;					///< External specific total energy rate feedforward (added to the throttle demand) [m²/s³].
 
 		// Pitch control param
 		float pitch_speed_weight;				///< Speed control weighting used by pitch demand calculation.
@@ -656,6 +657,13 @@ public:
 	void set_seb_rate_ff_gain(float ff_gain) { _control_param.seb_rate_ff = ff_gain; };
 
 	/**
+	 * Set an external specific total energy rate feedforward [m²/s³].
+	 * It is added to the total energy rate demand that drives the throttle feedforward,
+	 * e.g. from a time-parameterized trajectory planner. Set 0 to disable.
+	 */
+	void set_ste_rate_ff(float ste_rate_ff) { _control_param.ste_rate_ff = ste_rate_ff; };
+
+	/**
 	 * Handle the altitude reset
 	 *
 	 * If the estimation system resets the height in one discrete step this
@@ -762,6 +770,7 @@ private:
 		.airspeed_error_gain = 0.1f,
 		.ste_rate_time_const = 0.1f,
 		.seb_rate_ff = 1.0f,
+		.ste_rate_ff = 0.0f,
 		.pitch_speed_weight = 1.0f,
 		.integrator_gain_pitch = 0.0f,
 		.pitch_damping_gain = 0.0f,

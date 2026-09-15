@@ -308,6 +308,25 @@ void FixedwingAttitudeControl::Run()
 						}
 					}
 
+					// Add the external trajectory planner feedforward (fw_ff_control) as a pure
+					// additive term (u = u_ff + u_fb). The latest received sample is kept and its
+					// validity is decided by the timestamp, so the term is applied continuously
+					// instead of only on message-update cycles.
+					_fw_feedforward_sub.update();
+					const fw_feedforward_s &fw_feedforward = _fw_feedforward_sub.get();
+
+					if (fw_feedforward.valid
+					    && (hrt_elapsed_time(&fw_feedforward.timestamp) < 1_s)) {
+						body_rates_setpoint(0) += fw_feedforward.roll_rate_ff;
+						body_rates_setpoint(1) += fw_feedforward.pitch_rate_ff;
+
+						// Re-apply the rate limits so that the feedforward cannot bypass the safety envelope
+						body_rates_setpoint(0) = constrain(body_rates_setpoint(0), -radians(_param_fw_r_rmax.get()),
+										   radians(_param_fw_r_rmax.get()));
+						body_rates_setpoint(1) = constrain(body_rates_setpoint(1), -radians(_param_fw_p_rmax_neg.get()),
+										   radians(_param_fw_p_rmax_pos.get()));
+					}
+
 					/* add yaw rate setpoint from sticks in all attitude-controlled modes */
 					if (_vcontrol_mode.flag_control_manual_enabled) {
 						body_rates_setpoint(2) += math::constrain(_manual_control_setpoint.yaw * radians(_param_man_yr_max.get()),

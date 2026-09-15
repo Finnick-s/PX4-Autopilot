@@ -197,6 +197,9 @@ subscriptions:
   - topic: /fmu/in/vehicle_torque_setpoint
     type: px4_msgs::msg::VehicleTorqueSetpoint
 
+  - topic: /fmu/in/vehicle_ff_setpoint
+    type: px4_msgs::msg::VehicleFfSetpoint
+
   - topic: /fmu/in/actuator_motors
     type: px4_msgs::msg::ActuatorMotors
 

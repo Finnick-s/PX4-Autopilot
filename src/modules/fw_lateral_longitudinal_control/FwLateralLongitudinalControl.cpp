@@ -403,9 +403,14 @@ FwLateralLongitudinalControl::tecs_update_pitch_throttle(const float control_int
 	const float throttle_trim_compensated = _performance_model.getTrimThrottle(throttle_min,
 						throttle_max, airspeed_sp, _air_density);
 
-	_tecs.set_detect_underspeed_enabled(!disable_underspeed_detection);
+	// Specific total energy rate feedforward from the external trajectory planner (fw_ff_control).
+	// It is set every cycle (0 when the input is invalid or times out) so the TECS feedforward
+	// input tracks the latest sample instead of only updating on message-update cycles.
+	_fw_feedforward_sub.update();
+	const fw_feedforward_s &fw_feedforward = _fw_feedforward_sub.get();
+	const bool fw_feedforward_valid = fw_feedforward.valid && (hrt_elapsed_time(&fw_feedforward.timestamp) < 1_s);
+	_tecs.set_ste_rate_ff(fw_feedforward_valid ? fw_feedforward.ste_rate_ff : 0.f);
 
-	// HOTFIX: the airspeed rate estimate using acceleration in body-forward direction has shown to lead to high biases
 	// when flying tight turns. It's in this case much safer to just set the estimated airspeed rate to 0.
 	const float airspeed_rate_estimate = 0.f;
 

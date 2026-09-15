@@ -17,6 +17,7 @@ fw_rate_control start
 fw_att_control start
 fw_mode_manager start
 fw_lat_lon_control start
+fw_ff_control start
 airspeed_selector start
 
 #

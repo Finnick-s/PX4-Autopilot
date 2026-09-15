@@ -101,6 +101,7 @@ set(msg_files
 	FixedWingLateralStatus.msg
 	FixedWingRunwayControl.msg
 	FixedWingTakeoffStatus.msg
+	FwFeedforward.msg
 	GeneratorStatus.msg
 	GeofenceResult.msg
 	GeofenceStatus.msg
@@ -239,6 +240,7 @@ set(msg_files
 	VehicleAirData.msg
 	VehicleConstraints.msg
 	VehicleControlMode.msg
+	VehicleFfSetpoint.msg
 	VehicleImu.msg
 	VehicleImuStatus.msg
 	VehicleLocalPositionSetpoint.msg

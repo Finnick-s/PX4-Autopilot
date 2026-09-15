@@ -1,0 +1,5 @@
+menuconfig MODULES_FW_FF_CONTROL
+	bool "fw_ff_control"
+	default n
+	---help---
+		Enable support for fixed-wing feedforward augmentation control
