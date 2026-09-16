@@ -411,6 +411,9 @@ FwLateralLongitudinalControl::tecs_update_pitch_throttle(const float control_int
 	const bool fw_feedforward_valid = fw_feedforward.valid && (hrt_elapsed_time(&fw_feedforward.timestamp) < 1_s);
 	_tecs.set_ste_rate_ff(fw_feedforward_valid ? fw_feedforward.ste_rate_ff : 0.f);
 
+	_tecs.set_detect_underspeed_enabled(!disable_underspeed_detection);
+
+	// HOTFIX: the airspeed rate estimate using acceleration in body-forward direction has shown to lead to high biases
 	// when flying tight turns. It's in this case much safer to just set the estimated airspeed rate to 0.
 	const float airspeed_rate_estimate = 0.f;
 
